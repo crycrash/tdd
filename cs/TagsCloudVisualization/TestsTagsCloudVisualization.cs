@@ -1,11 +1,10 @@
 using NUnit.Framework;
 using FluentAssertions;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 
 namespace Layouter;
 
-public class Tests
+public class TestsCloudVisualization
 {
 
     CircularCloudLayouter circularCloudLayouter;
@@ -15,7 +14,7 @@ public class Tests
     }
 
     [Test]
-    public void CheckForSettingCenter()
+    public void CircularCloudLayouter_SettingCenter()
     {
         CircularCloudLayouter circularLayouter = new CircularCloudLayouter(new Point(2, 4));
         circularLayouter.Center.X.Should().Be(2);
@@ -23,20 +22,21 @@ public class Tests
     }
 
     [Test]
-    public void CheckForStartWithoutExceptions(){
+    public void CircularCloudLayouter_StartWithoutExceptions(){
         Action action = new Action(() => new CircularCloudLayouter(new Point(2, 6)));
         action.Should().NotThrow();
     }
 
     [Test]
-    public void CheckForThrowingWhenLengthsNegative(){
+    public void PutNextRectangle_ThrowingWhenLengthsNegative(){
         Action action = new Action(() => circularCloudLayouter.PutNextRectangle(new Size(-1, -1)));
         action.Should().Throw<ArgumentOutOfRangeException>().Which.Message.Should().Contain("side less or equal zero");
     }
 
     [Test]
-    public void CheckForThrowingWhenRectangleEmpty(){
+    public void PutNextRectangle_ThrowingWhenRectangleEmpty(){
         Action action = new Action(() => circularCloudLayouter.PutNextRectangle(Size.Empty));
         action.Should().Throw<ArgumentNullException>().Which.Message.Should().Contain("rectangle is empty");
     }
+
 }

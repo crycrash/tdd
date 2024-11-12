@@ -4,12 +4,16 @@ namespace Layouter;
 
 class CircularCloudLayouter
 {
-    Point centerPoint;
-    public Point Center => centerPoint;
+    Spiral spiral;
+    Point centercloud;
+
+    public Point Center => centercloud;
     
     public CircularCloudLayouter(Point center){
-        centerPoint = center;
+        this.centercloud = center;
+        this.spiral = new Spiral(center);
     }
+    
     public Rectangle PutNextRectangle(Size rectangleSize){
         if (rectangleSize.IsEmpty){
             throw new ArgumentNullException("rectangle is empty");
