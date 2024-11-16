@@ -1,0 +1,50 @@
+using System.Drawing;
+
+namespace TagsCloudLayouter;
+
+public class DrawingExamples
+{
+    public static void DrawImage_EqualsRectangles250()
+    {
+        var tempLayouter = new CircularCloudLayouter(new Point(400, 400));
+        for (int i = 0; i < 250; i++)
+            tempLayouter.PutNextRectangle(new Size(10, 5));
+        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.GetCenter.X * 2, tempLayouter.GetCenter.Y * 2), tempLayouter.GetRectangles);
+        drawingTagsCloud.SaveToFile("EqualsRectangles250temp.png");
+    }
+
+    public static void DrawImage_MixedRectangles320()
+    {
+        var tempLayouter = new CircularCloudLayouter(new Point(400, 400));
+        var rectanglesSizes = new List<Size>
+        {
+            new Size(10, 5),
+            new Size(8, 8),
+            new Size(12, 3),
+            new Size(6, 10)
+        };
+        for (int i = 0; i < 80; i++)
+        {
+            foreach (var size in rectanglesSizes)
+                tempLayouter.PutNextRectangle(size);
+        }
+        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.GetCenter.X * 2, tempLayouter.GetCenter.Y * 2), tempLayouter.GetRectangles);
+        drawingTagsCloud.SaveToFile("MixedRectangles320temp.png");
+    }
+
+    public static void DrawImage_DecreasingRectangles120()
+    {
+        var tempLayouter = new CircularCloudLayouter(new Point(400, 400));
+        tempLayouter.PutNextRectangle(new Size(160, 180));
+        for (int i = 0; i < 80; i++)
+        {
+            tempLayouter.PutNextRectangle(new Size(60, 40));
+        }
+        for (int i = 0; i < 39; i++)
+        {
+            tempLayouter.PutNextRectangle(new Size(20, 25));
+        }
+        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.GetCenter.X * 2, tempLayouter.GetCenter.Y * 2), tempLayouter.GetRectangles);
+        drawingTagsCloud.SaveToFile("DecreasingRectangles120temp.png");
+    }
+}

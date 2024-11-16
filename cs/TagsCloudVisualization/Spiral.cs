@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Layouter;
+namespace TagsCloudLayouter;
 
 class Spiral
 {

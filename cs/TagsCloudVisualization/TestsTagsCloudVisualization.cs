@@ -2,13 +2,14 @@ using NUnit.Framework;
 using FluentAssertions;
 using System.Drawing;
 
-namespace Layouter;
+namespace TagsCloudLayouter;
 
 public class TestsCloudVisualization
 {
     private CircularCloudLayouter circularCloudLayouter;
     [SetUp]
-    public void SetUp(){
+    public void SetUp()
+    {
         circularCloudLayouter = new CircularCloudLayouter(new Point(0, 0));
     }
 
@@ -21,30 +22,35 @@ public class TestsCloudVisualization
     }
 
     [Test]
-    public void CircularCloudLayouter_StartWithoutExceptions(){
+    public void CircularCloudLayouter_StartWithoutExceptions()
+    {
         Action action = new Action(() => new CircularCloudLayouter(new Point(2, 6)));
         action.Should().NotThrow();
     }
 
     [Test]
-    public void PutNextRectangle_ThrowingWhenLengthsNegative(){
+    public void PutNextRectangle_ThrowingWhenLengthsNegative()
+    {
         Action action = new Action(() => circularCloudLayouter.PutNextRectangle(new Size(-1, -1)));
         action.Should().Throw<ArgumentOutOfRangeException>().Which.Message.Should().Contain("side less or equal zero");
     }
 
     [Test]
-    public void PutNextRectangle_ThrowingWhenRectangleEmpty(){
+    public void PutNextRectangle_ThrowingWhenRectangleEmpty()
+    {
         Action action = new Action(() => circularCloudLayouter.PutNextRectangle(Size.Empty));
         action.Should().Throw<ArgumentNullException>().Which.Message.Should().Contain("rectangle is empty");
     }
 
     [Test]
-    public void CircularCloudLayouter_RectanglesEmptyAfterInitialization(){
+    public void CircularCloudLayouter_RectanglesEmptyAfterInitialization()
+    {
         circularCloudLayouter.GetRectangles.Should().BeEmpty();
     }
 
     [Test]
-    public void PutNextRectangle_PutFirstRectangle(){
+    public void PutNextRectangle_PutFirstRectangle()
+    {
         Size rectangleSize = new Size(3, 7);
         Rectangle expectedRectangle = new Rectangle(new Point(0, 0), rectangleSize);
         circularCloudLayouter.PutNextRectangle(rectangleSize);
@@ -54,9 +60,11 @@ public class TestsCloudVisualization
     }
 
     [Test]
-    public void PutNextRectangle_PutSeveralRectangles(){
+    public void PutNextRectangle_PutSeveralRectangles()
+    {
         Size rectangleSize = new Size(3, 7);
-        for(int i = 0;i < 20;i++){
+        for (int i = 0; i < 20; i++)
+        {
             circularCloudLayouter.PutNextRectangle(rectangleSize);
         }
         circularCloudLayouter.GetRectangles.Count().Should().Be(20);
@@ -107,7 +115,8 @@ public class TestsCloudVisualization
     }
 
     [Test]
-    public void PutNextRectangle_SeveralRectanglesDontIntersect(){
+    public void PutNextRectangle_SeveralRectanglesDontIntersect()
+    {
         var rectanglesSizes = new List<Size>
         {
             new Size(10, 5),
@@ -122,9 +131,18 @@ public class TestsCloudVisualization
         }
 
         List<Rectangle> rectanglesTemp = circularCloudLayouter.GetRectangles;
-        for (int i = 0; i < rectanglesTemp.Count; i++){
+        for (int i = 0; i < rectanglesTemp.Count; i++)
+        {
             for (int j = i + 1; j < rectanglesTemp.Count; j++)
                 rectanglesTemp[i].IntersectsWith(rectanglesTemp[j]).Should().BeFalse();
-        }  
+        }
+    }
+
+    [Test]
+    public void DrawRectangles()
+    {
+        DrawingExamples.DrawImage_DecreasingRectangles120();
+        DrawingExamples.DrawImage_EqualsRectangles250();
+        DrawingExamples.DrawImage_MixedRectangles320();
     }
 }
