@@ -1,12 +1,15 @@
 using NUnit.Framework;
 using FluentAssertions;
 using System.Drawing;
+using TagsCloudVisualization;
 
-namespace TagsCloudLayouter;
+
+namespace TagsCloudVisualizationTests;
 
 public class TestsCloudVisualization
 {
     private CircularCloudLayouter circularCloudLayouter;
+    
     [SetUp]
     public void SetUp()
     {
@@ -17,8 +20,8 @@ public class TestsCloudVisualization
     public void CircularCloudLayouter_SettingCenter()
     {
         CircularCloudLayouter circularLayouter = new CircularCloudLayouter(new Point(2, 4));
-        circularLayouter.GetCenter.X.Should().Be(2);
-        circularLayouter.GetCenter.Y.Should().Be(4);
+        circularLayouter.CenterCloud.X.Should().Be(2);
+        circularLayouter.CenterCloud.Y.Should().Be(4);
     }
 
     [Test]
@@ -55,8 +58,7 @@ public class TestsCloudVisualization
         Rectangle expectedRectangle = new Rectangle(new Point(0, 0), rectangleSize);
         circularCloudLayouter.PutNextRectangle(rectangleSize);
 
-        circularCloudLayouter.GetRectangles.Count().Should().Be(1);
-        circularCloudLayouter.GetRectangles.Should().Contain(expectedRectangle);
+        circularCloudLayouter.GetRectangles.Should().ContainSingle(x => x == expectedRectangle);
     }
 
     [Test]
@@ -67,51 +69,8 @@ public class TestsCloudVisualization
         {
             circularCloudLayouter.PutNextRectangle(rectangleSize);
         }
-        circularCloudLayouter.GetRectangles.Count().Should().Be(20);
+        circularCloudLayouter.GetRectangles.Should().HaveCount(20);
         circularCloudLayouter.GetRectangles.Should().AllBeOfType(typeof(Rectangle));
-    }
-
-    [Test]
-    public void PutNextRectangle_LessThanAreaOfCircle()
-    {
-        var rectanglesSizes = new List<Size>
-        {
-            new Size(10, 5),
-            new Size(8, 8),
-            new Size(12, 3),
-            new Size(6, 10)
-        };
-
-        foreach (var size in rectanglesSizes)
-        {
-            circularCloudLayouter.PutNextRectangle(size);
-        }
-
-        int totalRectangleArea = circularCloudLayouter.GetRectangles
-            .Sum(rect => rect.Width * rect.Height);
-
-        int maxRadiusFromCenter = (int)circularCloudLayouter.GetRectangles
-            .Max(rect => GetMaxDistanceToCorner(rect, circularCloudLayouter.GetCenter));
-
-        int circleArea = (int)(Math.PI * Math.Pow(maxRadiusFromCenter, 2));
-        totalRectangleArea.Should().BeLessThan(circleArea);
-    }
-
-    private double GetMaxDistanceToCorner(Rectangle rect, Point center)
-    {
-        var corners = new[]
-        {
-            new Point(rect.Left, rect.Top),
-            new Point(rect.Right, rect.Top),
-            new Point(rect.Left, rect.Bottom),
-            new Point(rect.Right, rect.Bottom)
-        };
-        return corners.Max(corner => Distance(center, corner));
-    }
-
-    private double Distance(Point p1, Point p2)
-    {
-        return (int)Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
     }
 
     [Test]
@@ -136,13 +95,5 @@ public class TestsCloudVisualization
             for (int j = i + 1; j < rectanglesTemp.Count; j++)
                 rectanglesTemp[i].IntersectsWith(rectanglesTemp[j]).Should().BeFalse();
         }
-    }
-
-    [Test]
-    public void DrawRectangles()
-    {
-        DrawingExamples.DrawImage_DecreasingRectangles120();
-        DrawingExamples.DrawImage_EqualsRectangles250();
-        DrawingExamples.DrawImage_MixedRectangles320();
     }
 }

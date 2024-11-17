@@ -2,7 +2,8 @@ using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using System.Drawing;
 
-namespace TagsCloudLayouter;
+namespace DrawingTagsCloudVisualization;
+
 public class DrawingTagsCloud
 {
     private readonly System.Drawing.Point centercloud;
@@ -28,16 +29,12 @@ public class DrawingTagsCloud
 
     private ICanvas Draw(ICanvas canvas)
     {
-
         canvas.FillColor = Colors.Blue;
         canvas.FontColor = Colors.Black;
 
         foreach (var rect in rectangles)
         {
-            canvas.FillRectangle(rect.X, rect.Y,
-                rect.Width,
-                rect.Height);
-
+            canvas.FillRectangle(rect.X, rect.Y, rect.Width, rect.Height);
         }
         return canvas;
     }

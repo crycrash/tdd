@@ -1,21 +1,21 @@
 using System.Drawing;
 
-namespace TagsCloudLayouter;
+namespace TagsCloudVisualization;
 
-class CircularCloudLayouter
+public class CircularCloudLayouter
 {
     private Spiral spiral;
-    private Point centercloud;
+    private Point centerСloud;
 
     private List<Rectangle> rectangles;
 
-    public Point GetCenter => centercloud;
+    public Point CenterCloud => centerСloud;
 
     public List<Rectangle> GetRectangles => rectangles;
 
     public CircularCloudLayouter(Point center)
     {
-        this.centercloud = center;
+        this.centerСloud = center;
         this.spiral = new Spiral(center);
         this.rectangles = new List<Rectangle>();
     }

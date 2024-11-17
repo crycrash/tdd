@@ -1,8 +1,8 @@
 using System.Drawing;
 
-namespace TagsCloudLayouter;
+namespace TagsCloudVisualization;
 
-class Spiral
+public class Spiral
 {
     private readonly Point startPoint;
     private readonly double radiusStep;

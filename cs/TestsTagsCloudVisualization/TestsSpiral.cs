@@ -1,8 +1,9 @@
 using NUnit.Framework;
 using FluentAssertions;
 using System.Drawing;
+using TagsCloudVisualization;
 
-namespace TagsCloudLayouter;
+namespace TagsCloudVisualizationTests;
 
 public class TestsSpiral
 {
@@ -34,7 +35,7 @@ public class TestsSpiral
         {
             currentSpiral.GetNextPoint();
         }
-        currentSpiral.GetNextPoint().Should().Be(new Point((int)(-Math.PI), 0));
+        currentSpiral.GetNextPoint().Should().Be(new Point((int)-Math.PI, 0));
     }
 
 }
