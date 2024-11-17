@@ -1,11 +1,12 @@
 using System.Drawing;
-using TagsCloudLayouter;
+using TagsCloudVisualization;
 
 namespace DrawingTagsCloudVisualization;
 
 public class DrawingExamples
 {
-    static void Main() { 
+    static void Main()
+    {
         DrawImage_DecreasingRectangles120();
         DrawImage_MixedRectangles320();
         DrawImage_EqualsRectangles250();
@@ -16,7 +17,7 @@ public class DrawingExamples
         var tempLayouter = new CircularCloudLayouter(new Point(400, 400));
         for (int i = 0; i < 250; i++)
             tempLayouter.PutNextRectangle(new Size(10, 5));
-        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.GetCenter.X * 2, tempLayouter.GetCenter.Y * 2), tempLayouter.GetRectangles);
+        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.CenterCloud.X * 2, tempLayouter.CenterCloud.Y * 2), tempLayouter.GetRectangles);
         drawingTagsCloud.SaveToFile("EqualsRectangles250.png");
     }
 
@@ -35,7 +36,7 @@ public class DrawingExamples
             foreach (var size in rectanglesSizes)
                 tempLayouter.PutNextRectangle(size);
         }
-        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.GetCenter.X * 2, tempLayouter.GetCenter.Y * 2), tempLayouter.GetRectangles);
+        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.CenterCloud.X * 2, tempLayouter.CenterCloud.Y * 2), tempLayouter.GetRectangles);
         drawingTagsCloud.SaveToFile("MixedRectangles320.png");
     }
 
@@ -51,7 +52,7 @@ public class DrawingExamples
         {
             tempLayouter.PutNextRectangle(new Size(20, 25));
         }
-        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.GetCenter.X * 2, tempLayouter.GetCenter.Y * 2), tempLayouter.GetRectangles);
+        DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(tempLayouter.CenterCloud.X * 2, tempLayouter.CenterCloud.Y * 2), tempLayouter.GetRectangles);
         drawingTagsCloud.SaveToFile("DecreasingRectangles120.png");
     }
 }

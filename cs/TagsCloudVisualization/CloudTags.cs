@@ -37,8 +37,46 @@ public class CircularCloudLayouter
             tempRectangle = new Rectangle(new Point(nextPoint.X, nextPoint.Y), rectangleSize);
         }
         while (IsRectangleIntersect(tempRectangle));
+        if (rectangles.Count > 1)
+            tempRectangle = TryToMoveRectangleNearToCenter(tempRectangle);
         rectangles.Add(tempRectangle);
         return tempRectangle;
+    }
+
+    private Rectangle TryToMoveRectangleNearToCenter(Rectangle rectangle)
+    {
+        while (true)
+        {
+            var tempRectangle = rectangle;
+            if (rectangle.X != centerСloud.X)
+            {
+                var directionX = rectangle.X < centerСloud.X ? 1 : -1;
+                rectangle = CanMove(rectangle, true, directionX);
+            }
+            if (rectangle.Y != centerСloud.Y)
+            {
+                var directionY = rectangle.Y < centerСloud.Y ? 1 : -1;
+                rectangle = CanMove(rectangle, false, directionY);
+            }
+
+            if (tempRectangle.Equals(rectangle))
+                break;
+        }
+        return rectangle;
+    }
+
+    private Rectangle CanMove(Rectangle rectangle, bool isX, int direction)
+    {
+        var shiftPoint = isX ? new Point(direction, 0) : new Point(0, direction);
+        var movedRectangle = new Rectangle(
+                new Point(rectangle.X + shiftPoint.X, rectangle.Y + shiftPoint.Y),
+                rectangle.Size);
+
+        if (!IsRectangleIntersect(movedRectangle))
+        {
+            rectangle = movedRectangle;
+        }
+        return rectangle;
     }
 
     private bool IsRectangleIntersect(Rectangle rectangleChecked) =>

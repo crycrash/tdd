@@ -9,7 +9,7 @@ namespace TagsCloudVisualizationTests;
 public class TestsCloudVisualization
 {
     private CircularCloudLayouter circularCloudLayouter;
-    
+
     [SetUp]
     public void SetUp()
     {
