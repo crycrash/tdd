@@ -2,6 +2,8 @@ using NUnit.Framework;
 using FluentAssertions;
 using System.Drawing;
 using TagsCloudVisualization;
+using NUnit.Framework.Interfaces;
+using DrawingTagsCloudVisualization;
 
 
 namespace TagsCloudVisualizationTests;
@@ -14,6 +16,20 @@ public class TestsCloudVisualization
     public void SetUp()
     {
         circularCloudLayouter = new CircularCloudLayouter(new Point(0, 0));
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        var context = TestContext.CurrentContext;
+        if (context.Result.Outcome == ResultState.Failure)
+        {
+            DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(circularCloudLayouter.CenterCloud.X * 2,
+                                                                    circularCloudLayouter.CenterCloud.Y * 2),
+                                                                    circularCloudLayouter.GetRectangles);
+            drawingTagsCloud.SaveToFile("Failed.png"); //сохраняется в bin
+            Console.WriteLine("Tag cloud visualization saved to file Failed.png");
+        }
     }
 
     [Test]
@@ -71,6 +87,20 @@ public class TestsCloudVisualization
         }
         circularCloudLayouter.GetRectangles.Should().HaveCount(20);
         circularCloudLayouter.GetRectangles.Should().AllBeOfType(typeof(Rectangle));
+    }
+
+    [Test]
+    public void PutNextRectangle_FailedTestForCheckTearDown()
+    {
+        for (int i = 0; i < 200; i++)
+            circularCloudLayouter.PutNextRectangle(new Size(8, 5));
+
+        Size rectangleSize = new Size(3, 7);
+        for (int i = 0; i < 20; i++)
+        {
+            circularCloudLayouter.PutNextRectangle(rectangleSize);
+        }
+        circularCloudLayouter.GetRectangles.Should().HaveCount(20);
     }
 
     [Test]
