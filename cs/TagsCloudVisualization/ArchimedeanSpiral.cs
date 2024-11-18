@@ -2,14 +2,14 @@ using System.Drawing;
 
 namespace TagsCloudVisualization;
 
-public class Spiral
+public class ArchimedeanSpiral
 {
     private readonly Point startPoint;
     private readonly double radiusStep;
     private readonly double angleStep;
     private double currentAngle;
 
-    public Spiral(Point startPoint, double radiusStep = 1)
+    public ArchimedeanSpiral(Point startPoint, double radiusStep = 1)
     {
         if (radiusStep <= 0) throw new ArgumentOutOfRangeException(nameof(radiusStep), "radius step must be positive");
 

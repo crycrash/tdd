@@ -30,7 +30,6 @@ public class DrawingTagsCloud
     private ICanvas Draw(ICanvas canvas)
     {
         canvas.FillColor = Colors.Blue;
-        canvas.FontColor = Colors.Black;
 
         foreach (var rect in rectangles)
         {

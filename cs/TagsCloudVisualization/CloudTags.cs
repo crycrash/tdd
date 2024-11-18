@@ -4,7 +4,7 @@ namespace TagsCloudVisualization;
 
 public class CircularCloudLayouter
 {
-    private Spiral spiral;
+    private ArchimedeanSpiral spiral;
     private Point centerСloud;
 
     private List<Rectangle> rectangles;
@@ -16,7 +16,7 @@ public class CircularCloudLayouter
     public CircularCloudLayouter(Point center)
     {
         this.centerСloud = center;
-        this.spiral = new Spiral(center);
+        this.spiral = new ArchimedeanSpiral(center);
         this.rectangles = new List<Rectangle>();
     }
 
@@ -51,12 +51,12 @@ public class CircularCloudLayouter
             if (rectangle.X != centerСloud.X)
             {
                 var directionX = rectangle.X < centerСloud.X ? 1 : -1;
-                rectangle = CanMove(rectangle, true, directionX);
+                rectangle = MovingRectangleIfPossible(rectangle, true, directionX);
             }
             if (rectangle.Y != centerСloud.Y)
             {
                 var directionY = rectangle.Y < centerСloud.Y ? 1 : -1;
-                rectangle = CanMove(rectangle, false, directionY);
+                rectangle = MovingRectangleIfPossible(rectangle, false, directionY);
             }
 
             if (tempRectangle.Equals(rectangle))
@@ -65,12 +65,13 @@ public class CircularCloudLayouter
         return rectangle;
     }
 
-    private Rectangle CanMove(Rectangle rectangle, bool isX, int direction)
+    private Rectangle MovingRectangleIfPossible(Rectangle rectangle, bool isX, int direction)
     {
         var shiftPoint = isX ? new Point(direction, 0) : new Point(0, direction);
-        var movedRectangle = new Rectangle(
-                new Point(rectangle.X + shiftPoint.X, rectangle.Y + shiftPoint.Y),
-                rectangle.Size);
+        var movedRectangle = rectangle with
+        {
+            Location = new Point(rectangle.X + shiftPoint.X, rectangle.Y + shiftPoint.Y)
+        };
 
         if (!IsRectangleIntersect(movedRectangle))
         {

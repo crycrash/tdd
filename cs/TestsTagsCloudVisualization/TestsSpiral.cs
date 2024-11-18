@@ -8,17 +8,17 @@ namespace TagsCloudVisualizationTests;
 public class TestsSpiral
 {
 
-    Spiral currentSpiral;
+    ArchimedeanSpiral currentSpiral;
     [SetUp]
     public void SetUp()
     {
-        currentSpiral = new Spiral(new Point(0, 0));
+        currentSpiral = new ArchimedeanSpiral(new Point(0, 0));
     }
 
     [Test]
     public void Spiral_ThrowingWhenRadiusNonPositive()
     {
-        Action action = new Action(() => new Spiral(new Point(0, 0), -9));
+        Action action = new Action(() => new ArchimedeanSpiral(new Point(0, 0), -9));
         action.Should().Throw<ArgumentOutOfRangeException>().Which.Message.Should().Contain("radius step must be positive");
     }
 

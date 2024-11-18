@@ -27,8 +27,9 @@ public class TestsCloudVisualization
             DrawingTagsCloud drawingTagsCloud = new DrawingTagsCloud(new Point(circularCloudLayouter.CenterCloud.X * 2,
                                                                     circularCloudLayouter.CenterCloud.Y * 2),
                                                                     circularCloudLayouter.GetRectangles);
-            drawingTagsCloud.SaveToFile("Failed.png"); //сохраняется в bin
-            Console.WriteLine("Tag cloud visualization saved to file Failed.png");
+            var pathToSave = context.Test.MethodName + ".png";
+            drawingTagsCloud.SaveToFile(pathToSave); //сохраняется в bin
+            Console.WriteLine($"Tag cloud visualization saved to file {pathToSave}");
         }
     }
 
@@ -90,15 +91,27 @@ public class TestsCloudVisualization
     }
 
     [Test]
-    public void PutNextRectangle_FailedTestForCheckTearDown()
+    public void PutNextRectangle_FirstFailedTestForCheckTearDown()
     {
         for (int i = 0; i < 200; i++)
             circularCloudLayouter.PutNextRectangle(new Size(8, 5));
 
-        Size rectangleSize = new Size(3, 7);
         for (int i = 0; i < 20; i++)
         {
-            circularCloudLayouter.PutNextRectangle(rectangleSize);
+            circularCloudLayouter.PutNextRectangle(new Size(3, 7));
+        }
+        circularCloudLayouter.GetRectangles.Should().HaveCount(20);
+    }
+
+    [Test]
+    public void PutNextRectangle_SecondFailedTestForCheckTearDown()
+    {
+        for (int i = 0; i < 150; i++)
+            circularCloudLayouter.PutNextRectangle(new Size(2, 4));
+
+        for (int i = 0; i < 200; i++)
+        {
+            circularCloudLayouter.PutNextRectangle(new Size(2, 2));
         }
         circularCloudLayouter.GetRectangles.Should().HaveCount(20);
     }
